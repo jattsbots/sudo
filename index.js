@@ -58,7 +58,7 @@ async function generateAndSendHash(ctx, fileId, fileName) {
         writer.on('finish', async () => {
             const stats = fs.statSync(filePath);
             console.log(`Downloaded file size: ${stats.size} bytes`);
-            if (stats.size > 2 * 1024 * 1024 * 1024) {
+            if (stats.size > 4 * 1024 * 1024 * 1024) {
                 console.error('Error: File size exceeds 2GB limit!');
                 await ctx.reply('Error: File size exceeds 2GB limit!');
                 return;
@@ -71,7 +71,7 @@ async function generateAndSendHash(ctx, fileId, fileName) {
                 const newFilePath = path.join(downloadsDir, `${hash}.mp4`);
                 fs.renameSync(filePath, newFilePath);
 
-                const photoUrl = 'https://graph.org/file/4e8a1172e8ba4b7a0bdfa.jpg'; // Your photo URL
+                const photoUrl = 'https://telegra.ph/file/116fbd0c4f548ff66a9b9.jpg'; // Your photo URL
                 await sendPhotoWithLink(ctx, photoUrl, hash, fileName, stats.size);
             } catch (error) {
                 console.error('Hash generation error:', error);
@@ -93,11 +93,11 @@ async function generateAndSendHash(ctx, fileId, fileName) {
 // Function to post the file and photo with buttons to a specified channel
 async function postToChannel(hash, fileName, fileSize) {
     const filePath = path.join(downloadsDir, `${hash}.mp4`);
-    const photoUrl = 'https://graph.org/file/4e8a1172e8ba4b7a0bdfa.jpg'; // Your photo URL
+    const photoUrl = 'https://telegra.ph/file/116fbd0c4f548ff66a9b9.jpg'; // Your photo URL
 
     if (fs.existsSync(filePath)) {
         try {
-            const caption = `📁 File: ${fileName}\n📦 Size: ${(fileSize / (1024 * 1024)).toFixed(2)} MB\n\nClick the button below to download:`;
+            const caption = `📁 File: ${fileName}\n📦 Size: ${(fileSize / (1024 * 1024)).toFixed(4)} MB\n\nClick the button below to download:`;
 
             await bot.telegram.sendPhoto(process.env.CHANNEL_ID, photoUrl, {
                 caption: caption,
@@ -123,7 +123,7 @@ async function sendPhotoWithLink(ctx, photoUrl, hash, fileName, fileSize) {
     const downloadLink = generateFileDownloadLink(hash);
 
     await ctx.replyWithPhoto(photoUrl, {
-        caption: `📁 File: ${fileName}\n📦 Size: ${(fileSize / (1024 * 1024)).toFixed(2)} MB\n\nDownload your file using this link:`,
+        caption: `📁 File: ${fileName}\n📦 Size: ${(fileSize / (1024 * 1024)).toFixed(4)} MB\n\nDownload your file using this link:`,
         reply_markup: {
             inline_keyboard: [
                 [
@@ -148,7 +148,7 @@ bot.start(async (ctx) => {
         reply_markup: {
             inline_keyboard: [
                 [
-                    { text: '✨ Join Channel ✨', url: 'https://t.me/Opleech_WD' }
+                    { text: '✨ Join Channel ✨', url: 'https://t.me/PBX1_BOTS' }
                 ]
             ]
         }
